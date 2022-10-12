@@ -211,6 +211,27 @@ class Mod(commands.Cog):
 		embed.set_image(url=url)
 		await ctx.send(embed=embed)
 
+	@commands.command()
+	async def wave(self, ctx, member: discord.Member = None):
+		kiss = ['https://c.tenor.com/D1ssnoLuZiUAAAAC/anime-salute.gif',
+        'https://i.pinimg.com/originals/5e/ff/3d/5eff3d1f8334f601b31687e26a880181.gif',
+        'https://i.gifer.com/embedded/download/RYA8.gif',
+        'http://img10.joyreactor.cc/pics/post/Anime-Anime-%D0%93%D0%B8%D1%84%D0%BA%D0%B8-ToAru-Laura-Stuart-2499560.gif',
+        'https://pa1.narvii.com/6797/d981548b0cf5503dd92b4471b49caa000889d6b6_hq.gif',
+        'https://thumbs.gfycat.com/CalmPerkyKingbird-size_restricted.gif',
+        'https://pa1.narvii.com/6783/3d4df3b75e1c3aa668e47f4c61af1b5b7201d4e5_hq.gif',
+        'https://sm.ign.com/ign_pt/screenshot/default/bye-bye-gif_ftvw.gif'
+        ]
+		if member is None:
+			member = ctx.author
+		await ctx.message.delete()
+		embed = discord.Embed(color=ctx.author.color, title=f"")
+		embed.description = f"**{ctx.author.mention} поприветствовал {member.mention}**"
+		url = (random.choice(kiss))
+		embed.set_image(url=url)
+		await ctx.send(embed=embed)
+
+
 
 	@commands.command()
 	async def feed(self, ctx, member: discord.Member = None):

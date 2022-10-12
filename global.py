@@ -7,12 +7,15 @@ import datetime
 import youtube_dl
 import random
 import sqlite3
+import json
 
-
-
+with open ("bans.json", "r") as f:
+	global users
+	users = json.load(f)
+print (f"Забаненные - {users}")
 
 TOKEN = "OTg0NzkyNzk3NjQ5NDY1Mzk0.G-WR2y.-8-VZT8Bs6dWKn5FJlFEhW5K6W2GzmV5_ZXkTQ"
-PREFIX = "w."
+PREFIX = "wg."
 intents = discord.Intents.all()
 bot = commands.AutoShardedBot(command_prefix=PREFIX, intents=intents)
 bot.remove_command('help')
@@ -23,9 +26,9 @@ async def on_ready():
     print('global is on')
     await bot.change_presence(status=discord.Status.dnd)
 
-
+global Gban
 GLOBAL_CHAT = 'global-chat'  # PEP8: Названия констант пишутся капсом
-Gban = [754671882803871784]
+Gban = users
 @bot.event
 async def on_message(message):
     await bot.process_commands(message)
@@ -52,10 +55,17 @@ async def on_message(message):
 
 
 @bot.command()
-async def gban(ctx, member: discord.Member, *, reason="Просто так"):
+@commands.is_owner()
+async def ban(ctx, member: discord.Member, *, reason="Просто так"):
 	c = bot.get_channel(993070491428470834)
 	embed = discord.Embed(title=f"Пользователь {member} был за банен в глобальном чате по причине [{reason}]", color=discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), timestamp=datetime.datetime.utcnow())
-
+	with open ("bans.json", "r") as f:
+		users1 = json.load(f)
+	with open ("bans.json", "w") as f:
+		users1.append(member.id)
+		global Gban
+		Gban = users1
+		json.dump (users1, f)
 	await c.send(embed=embed)
 
 
@@ -67,20 +77,10 @@ async def ping(ctx):
 @bot.command()
 @commands.has_permissions(manage_messages=True)
 @commands.cooldown(1, 5, commands.BucketType.guild)
-async def gclear(ctx, amount=6):
+async def clear(ctx, amount=6):
 	if ctx.author.id == 690895078247497799:
-		c = bot.get_channel(993070491428470834)
-		GLOBAL_CHAT = 'глобальный-чат'
-		embed = discord.Embed(title=f"Отчистка глобального чата!\nСообщений отчищается [{amount}]", color=discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), timestamp=datetime.datetime.utcnow())
-		await c.send(embed=embed)
-
-		for guild in bot.guilds:
-
-			if channel := discord.utils.get(guild.text_channels, name=GLOBAL_CHAT):
-				await channel.purge(limit=amount)
-	elif ctx.author.id == 406695050349903884:
-		c = bot.get_channel()
-		GLOBAL_CHAT = 'глобальный-чат'
+		c = bot.get_channel(993273720040853577)
+		GLOBAL_CHAT = 'global-chat'
 		embed = discord.Embed(title=f"Отчистка глобального чата!\nСообщений отчищается [{amount}]", color=discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), timestamp=datetime.datetime.utcnow())
 		await c.send(embed=embed)
 
@@ -93,7 +93,19 @@ async def gclear(ctx, amount=6):
 		embed = discord.Embed(title=f"Ошибка!\nВы не являетесь персоналом глобального чата, чтоб использовать эту команду!", color=discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), timestamp=datetime.datetime.utcnow())
 		await ctx.send(embed=embed)
 
-
+@bot.command()
+@commands.is_owner()
+async def unban(ctx, member: discord.Member):
+	c = bot.get_channel(993070491428470834)
+	embed = discord.Embed(title=f"Пользователь {member} был за разбанен в глобальном чате по причине", color=discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), timestamp=datetime.datetime.utcnow())
+	with open ("bans.json", "r") as f:
+		users1 = json.load(f)
+	with open ("bans.json", "w") as f:
+		users1.remove(member.id)
+		global Gban
+		Gban = users1
+		json.dump (users1, f)
+	await c.send(embed=embed)
 
 
 
