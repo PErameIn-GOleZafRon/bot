@@ -44,7 +44,7 @@ async def on_message(message):
         if channel := discord.utils.get(guild.text_channels, name=GLOBAL_CHAT):
 
             try:
-            	embed = discord.Embed(title=f"", description = '<a:1907nitroboostinglevel:992778664821411840> ➤ **{0.content}**'.format(message), colour = discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), timestamp=datetime.datetime.utcnow())
+            	embed = discord.Embed(title=f"", description = '<:7371discordhypesquadbrilliance:1030520234051907674> <a:2353arrowrightglow:1029814234416169040>   **{0.content}**'.format(message), colour = discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), timestamp=datetime.datetime.utcnow())
             	embed.set_footer(text = "{0.guild}".format(message), icon_url = "{0.guild.icon_url}".format(message))
             	embed.set_author(name="{0.author} ({0.author.id})".format(message), icon_url="{0.author.avatar_url}".format(message))
             	await channel.send(embed = embed)

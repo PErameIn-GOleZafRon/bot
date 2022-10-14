@@ -395,6 +395,7 @@ class Mod(commands.Cog):
 	async def emojis(self, ctx):
 		for emoji in ctx.guild.emojis:
 			print(f"<a:{emoji.name}:{emoji.id}>")
+			embed = discord.Embed(title=f"```<:{emoji.name}:{emoji.id}>```", description=f"<:{emoji.name}:{emoji.id}>")
 			embed = discord.Embed(title=f"```<a:{emoji.name}:{emoji.id}>```", description=f"<:{emoji.name}:{emoji.id}>")
 			await ctx.send(embed=embed)
 
